@@ -70,5 +70,5 @@ if [[ -z $VOLUME ]]; then
 	exit
 fi
 
-${HOME}/bin/statusbar/status2d_volume -p $VOLUME -h $HEIGHT --textcolor "$TEXTCOLOR" --oddcolor "$ODDCOLOR" --evencolor "$EVENCOLOR"
+${HOME}/.local/bin/slstatusbar/status2d_volume -p $VOLUME -h $HEIGHT --textcolor "$TEXTCOLOR" --oddcolor "$ODDCOLOR" --evencolor "$EVENCOLOR"
 

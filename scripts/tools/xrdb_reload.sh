@@ -2,7 +2,7 @@
 
 THEME=$1
 if [ "$THEME" != "" ] && [ -e "$THEME" ]; then
-	sed --follow-symlinks -i "0,/^#include \".*\/themes\/.*[.]res\"$/{s|^#include \".*\"|#include \"$THEME\"|}" ~/.Xresources
+	sed --follow-symlinks -i "0,/^#include \".*\/themes\/.*[.]res\"$/{s|^#include \".*\"|#include \"$THEME\"|}" ~/.config/x11/Xresources
 	echo "Loading theme: $THEME"
 fi
 

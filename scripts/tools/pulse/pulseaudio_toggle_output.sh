@@ -26,7 +26,7 @@ for INPUT in $(pactl list short sink-inputs | cut -f 1); do
 	pactl move-sink-input $INPUT $NEXT
 done
 
-duskc --ignore-reply run_command setstatus 1 "$(~/bin/statusbar/volume)"
+duskc --ignore-reply run_command setstatus 1 "$(~/.local/bin/slstatusbar/volume)"
 
 # On some systems one may have to change the profile of the same card, e.g.
 #   pactl set-card-profile 0 output:hdmi-stereo

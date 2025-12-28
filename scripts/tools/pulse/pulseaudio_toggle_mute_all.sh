@@ -8,4 +8,4 @@ for SINK_ID in $(pacmd list-sinks | awk '/index:/ { print $NF }'); do
 	pactl set-sink-mute $SINK_ID $MUTE
 done
 
-duskc --ignore-reply run_command setstatus 1 "$(~/bin/statusbar/volume)"
+duskc --ignore-reply run_command setstatus 1 "$(~/.local/bin/slstatusbar/volume)"
