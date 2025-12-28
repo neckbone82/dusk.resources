@@ -44,7 +44,7 @@ while true; do
 	if [ $((secs % 60)) = 0 ]; then
 		$SETSTATUS 5 "$($DIR/mouse_battery)" &
 		$SETSTATUS 1 "$($DIR/volume)" &
-		$SETSTATUS 9 "$($DIR/kblayout)" &
+		#$SETSTATUS 9 "$($DIR/kblayout)" &
 	fi
 
 	# Update these once after 1 minute, i.e. hourly

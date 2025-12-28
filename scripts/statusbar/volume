@@ -1,74 +1,27 @@
 #!/bin/bash
 
-# Defaults
+# Configuration (from dev's original script)
 EVENCOLOR="^C1^"
 ODDCOLOR="^C1^"
 TEXTCOLOR="^d^"
-TBPAD=4
-HEIGHT=$BAR_HEIGHT
+HEIGHT=${BAR_HEIGHT:-18} # Default height if not set
 TMPFILE="/tmp/.${USER}.statusbar.volume.${DISPLAY}.dat~"
 
-if [ -f $TMPFILE ]; then
-	source $TMPFILE
+# 1. Check if Muted (PipeWire / Pamixer version)
+if [ "$(pamixer --get-mute)" == "true" ]; then
+    echo "🔇"
+    exit
 fi
 
-while (( $# )); do
-	case "$1" in
-	-h|--height)
-		shift
-		HEIGHT=$1
-		shift
-		;;
-	--evencolor)
-		shift
-		EVENCOLOR=$1
-		shift
-		;;
-	--oddcolor)
-		shift
-		ODDCOLOR=$1
-		shift
-		;;
-	--textcolor)
-		shift
-		TEXTCOLOR=$1
-		shift
-		;;
-	--tbpad)
-		shift
-		TBPAD=$1
-		shift
-		;;
-	esac
-done
+# 2. Get Volume Percentage (PipeWire / Pamixer version)
+# Returns a clean number like "65"
+VOLUME=$(pamixer --get-volume)
 
-echo "EVENCOLOR='$EVENCOLOR';ODDCOLOR='$ODDCOLOR';TEXTCOLOR='$TEXTCOLOR';HEIGHT='$HEIGHT';TBPAD='$TBPAD'" > $TMPFILE
-
-if [[ $(pacmd list-sinks | grep -c "muted: yes") > 0 ]]; then
-	echo "🔇"
-	exit
+if [ -z "$VOLUME" ]; then
+    echo " %"
+    exit
 fi
 
-VOLUME=$(pacmd list-sinks | awk '
-	BEGIN {
-		FOUND=0
-	}
-	/* index:/ {
-		FOUND=1
-	}
-	/volume:/ {
-		if (FOUND == 0)
-			next
-		gsub("%","",$5)
-		print $5
-		exit 0
-	}
-')
-
-if [[ -z $VOLUME ]]; then
-	echo " %"
-	exit
-fi
-
-${HOME}/.local/bin/slstatusbar/status2d_volume -p $VOLUME -h $HEIGHT --textcolor "$TEXTCOLOR" --oddcolor "$ODDCOLOR" --evencolor "$EVENCOLOR"
-
+# 3. Call the Dev's Fancy Visualizer
+# This keeps the "intended" look (graphical bars)
+${HOME}/.local/bin/slstatusbar/status2d_volume -p "$VOLUME" -h "$HEIGHT" --textcolor "$TEXTCOLOR" --oddcolor "$ODDCOLOR" --evencolor "$EVENCOLOR"

@@ -3,12 +3,22 @@
 DIR=$(dirname ${BASH_SOURCE[0]})
 
 case $BLOCK_BUTTON in
-	1) notify-send  -t 3000 "$(pactl info | awk '/Default Sink/ { print $NF }')" & ;;
-	2) $HOME/.local/bin/slstatusbar/tools/pulse/pulseaudio_toggle_mute_all.sh & ;;
-	3) notify-send  -t 2000 "vol 3" & ;;
-	4) $HOME/.local/bin/slstatusbar/tools/pulse/pulseaudio_increase_output_volume.sh & ;;
-	5) $HOME/.local/bin/slstatusbar/tools/pulse/pulseaudio_decrease_output_volume.sh & ;;
-	8) subl $DIR/volume ;;
-	9) subl $DIR/volume_click ;;
-	*) notify-send -t 2000 "vol $BLOCK_BUTTON" & ;;
+    # Left Click: Open TUI Controller (pulsemixer)
+    # If you don't have pulsemixer, change this to: st -e alsamixer
+    1) st -n "pulsemixer_float" -g 100x30 -e pulsemixer & ;;
+    # Middle Click: Mute (using the script we fixed earlier)
+    2) $HOME/.local/bin/slstatusbar/tools/pulse/pulseaudio_toggle_mute_all.sh & ;;
+
+    # Right Click: Show Device Name ("The other one")
+    3) notify-send -t 3000 "$(pactl info | awk '/Default Sink/ { print $NF }')" & ;;
+
+    # Scroll Up: Increase Volume
+    4) $HOME/.local/bin/slstatusbar/tools/pulse/pulseaudio_increase_output_volume.sh & ;;
+
+    # Scroll Down: Decrease Volume
+    5) $HOME/.local/bin/slstatusbar/tools/pulse/pulseaudio_decrease_output_volume.sh & ;;
+
+    # Developer Shortcuts (Editor)
+    8) subl $DIR/volume ;;
+    9) subl $DIR/volume_click ;;
 esac

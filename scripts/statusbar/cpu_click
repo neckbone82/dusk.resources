@@ -3,8 +3,15 @@
 DIR=$(dirname ${BASH_SOURCE[0]})
 
 case $BLOCK_BUTTON in
-	3) $HOME/.local/bin/slstatusbar/context_menu/cpumenu & ;;
-	8) subl $DIR/cpu.c ;;
-	9) subl $DIR/cpu_click ;;
-	*) notify-send -t 2000 "cpu $BLOCK_BUTTON" & ;;
+    # Left Click: Open btop
+    1) st -n "btop_float" -g 100x30 -e btop & ;;
+
+    # Right Click: Open CPU Context Menu (Developer default)
+    3) $HOME/.local/bin/slstatusbar/context_menu/cpumenu & ;;
+
+    # Developer Shortcuts
+    8) subl $DIR/cpu.c ;;
+    9) subl $DIR/cpu_click ;;
+
+    *) notify-send -t 2000 "cpu $BLOCK_BUTTON" & ;;
 esac

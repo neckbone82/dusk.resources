@@ -1,11 +1,8 @@
 #!/bin/sh
-# Mutes/unmutes the all audio output
+# Mutes/unmutes the default audio output (PipeWire compatible)
 
-pactl list sinks | grep -q "Mute: yes"
-MUTE=$?
+# 1. Toggle the mute state
+pamixer --toggle-mute
 
-for SINK_ID in $(pacmd list-sinks | awk '/index:/ { print $NF }'); do
-	pactl set-sink-mute $SINK_ID $MUTE
-done
-
+# 2. Tell dusk to repaint the status bar immediately
 duskc --ignore-reply run_command setstatus 1 "$(~/.local/bin/slstatusbar/volume)"
